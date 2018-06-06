@@ -19,7 +19,7 @@ class MostPopularMoviesPresenterImpTest : UnitTest() {
     @Mock
     private lateinit var movieUseCase: GetPopularMoviesUseCase
     @Mock
-    private lateinit var searchUseCase : SearchMoviesUseCase
+    private lateinit var searchUseCase: SearchMoviesUseCase
     @Mock
     private lateinit var view: MostPopularMoviesView
     @Mock
@@ -29,17 +29,15 @@ class MostPopularMoviesPresenterImpTest : UnitTest() {
     fun setup() {
         presenter = MostPopularMoviesPresenterImp(movieUseCase, searchUseCase)
         initView()
+        initModel()
     }
 
     private fun initView() {
         presenter.view = view
     }
 
-    @Test
-    fun getPopularMoviesTest() {
-        presenter.getPopularMovies()
-
-        verify(movieUseCase).execute(any(), any())
+    private fun initModel() {
+        presenter.model = model
     }
 
     @Test
@@ -77,5 +75,22 @@ class MostPopularMoviesPresenterImpTest : UnitTest() {
         presenter.addFooter()
 
         verify(model, never()).add(any())
+    }
+
+    @Test
+    fun addFooterTrueTest() {
+        presenter.isLastPage = false
+
+        presenter.addFooter()
+
+        verify(model).add(any())
+    }
+
+    @Test
+    fun onDestroyTest() {
+        presenter.onDestroy()
+
+        verify(movieUseCase).dispose()
+        verify(searchUseCase).dispose()
     }
 }

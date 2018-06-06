@@ -32,7 +32,7 @@ class MostPopularMoviesPresenterImp @Inject constructor(private val popularMovie
         loadData()
     }
 
-    fun getPopularMovies() {
+    private fun getPopularMovies() {
         popularMoviesUseCase.execute(MostPopularMoviesParams(++page), MostPopularMoviesObserver(this))
     }
 
@@ -49,7 +49,6 @@ class MostPopularMoviesPresenterImp @Inject constructor(private val popularMovie
         } else
             removeFooterAndConcat(movieListPaginationViewModel)
         manageViewAfterOK()
-
     }
 
     override fun onErrorReceived(errorCode: Int) {
