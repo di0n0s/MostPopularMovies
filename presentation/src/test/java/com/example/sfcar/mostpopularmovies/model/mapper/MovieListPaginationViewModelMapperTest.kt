@@ -2,11 +2,17 @@ package com.example.sfcar.mostpopularmovies.model.mapper
 
 import android.content.Context
 import com.example.sfcar.mostpopularmovies.UnitTest
+import com.example.sfcar.mostpopularmovies.domain.model.Movie
 import com.example.sfcar.mostpopularmovies.domain.model.MovieListPagination
+import com.example.sfcar.mostpopularmovies.model.BaseMovieViewModel
 import com.example.sfcar.mostpopularmovies.model.MovieListPaginationViewModel
+import com.example.sfcar.mostpopularmovies.model.MovieViewModel
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doReturn
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 
@@ -44,17 +50,26 @@ class MovieListPaginationViewModelMapperTest : UnitTest() {
     @Mock
     private lateinit var context: Context
 
+    private val list: List<Movie> = listOf(
+            Movie("Spiderman", "2018/02/04", "Spiderman Movie", "/pic.jpg"),
+            Movie("Venom", "", "", "")
+    )
+
     companion object {
-        private val CURRENT_PAGE = 425
-        private val PAGES_NUMBER = 560
+        private const val CURRENT_PAGE = 425
+        private const val PAGES_NUMBER = 560
     }
 
     @Test
     fun turnInto() {
-        val movieListPaginationViewModel = MovieListPaginationViewModelMapper.turnInto(MovieListPagination(), context)
+        doReturn("Unknown")
+                .`when`(context)
+                .getString(any())
+        val movieListPaginationViewModel = MovieListPaginationViewModelMapper.turnInto(MovieListPagination(PAGES_NUMBER, CURRENT_PAGE , list), context)
         assertThat(movieListPaginationViewModel, `is`<Any>(instanceOf<Any>(MovieListPaginationViewModel::class.java)))
-
-
+        assertThat(movieListPaginationViewModel.currentPage, `is`<Int>(CURRENT_PAGE))
+        assertThat(movieListPaginationViewModel.pagesNumber, `is`<Int>(PAGES_NUMBER))
+        assertThat(movieListPaginationViewModel.movieList.size, `is`(2))
     }
 
 }

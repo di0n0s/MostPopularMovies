@@ -17,8 +17,8 @@ object MovieListResponseMapper {
             val results = movieListResponseDto.results
             if (results != null && results.isNotEmpty()) {
                 results.forEach {
-                    //                    if (it.title != null && it.release_date != null && it.overview != null && it.backdrop_path != null)
-                    movieList.add(MovieResponseMapper.toBusinessObject(it))
+                    if (it.original_title != null && it.original_title.isNotBlank())
+                        movieList.add(MovieResponseMapper.toBusinessObject(it))
                 }
             }
         }
